@@ -10,10 +10,22 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 {
    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")); 
 });
+builder.Services.AddCors();
+// builder.Services.AddCors(options =>
+// {
+//    options.AddPolicy("CorsPolicy", policy =>
+//    {
+//       policy.AllowAnyMethod()
+//             .AllowAnyHeader()
+//             .WithOrigins("http://localhost:3000");
+//    });
+// });
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
+//app.UseCors("CorsPolicy");
+app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:3000", "https://localhost:3000"));
 
 app.MapControllers();
 
